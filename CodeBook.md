@@ -72,14 +72,24 @@ The experiments have been carried out with a group of 30 volunteers within an ag
 
 ### Data Transformation:
 ---
-1. Read test and train data file into R using read.table function with default options unchanged.
+1. Read test and train data file into R using read.table function with option header = FALSE in the following variables below: (DF is data frame)
+	- features read into variable **featureDF**
+	- activity labels read into variable **activityLabelsDf**
+	- train features read into **trainDatasetDF**
+	- train activity read into **trainActivityDF**
+	- train subject read into **trainSubjectDF**
+	- test features read into **testDatasetDF**
+	- test activity read into **testActivityDF**
+	- test subject read into **testSubjectDF**
+	  	
 2. Using row bind function to:
-	-	1 row bind test and train subject data into originalSubject
-	- 	2 row bind test and train activity data into originalActivity 
-	-  	3 row bind test and train features data into originalFeatures
-3. read features using read.table into feature table and extract from features names from column 2 of feature table and store into character vector features.
-4. Name columns of originalFeatures by assigning features to it.
-5. OriginalFeatures data had 561 features. But we are only interested in mean and standard deviation measurements. Selecting mean and standard deviation measurements on reduced the features to 79 features. Furthermore we eliminated meanFreq measurements since it's weighted average of the frequency components to obtain mean. This reduced the features to 66 features. Then named data set extractedDataTemp
+	-	1 row bind test and train subject data into **originalSubjectDF**
+	- 	2 row bind test and train activity data into **originalActivityDF** 
+	-  	3 row bind test and train features data into **originalDatasetDF**
+3. Extract features names from column 2 of **featureDF** and and column name **originalDatasetDF** with it.
+4. Column name **originalActivityDF** as **"Activity"**
+5. Column name **originalSubjectDF** as **"Subject"**
+6. OriginalFeatures data had 561 features. But we are only interested in mean and standard deviation measurements. Selecting mean and standard deviation measurements reduced the features to 79 features. Furthermore I eliminated meanFreq measurements since it's weighted average of the frequency components to obtain mean. This reduced the features to 66 features. Then named data set is named **extractedDatasetTempDF**
 
 	- 1 tBodyAcc-mean()-X
 	- 2 tBodyAcc-mean()-Y
@@ -148,15 +158,18 @@ The experiments have been carried out with a group of 30 volunteers within an ag
 	- 65 fBodyBodyGyroJerkMag-mean()
 	- 66 fBodyBodyGyroJerkMag-std() 
 
-6. Now column bind the originalSubject, originalActivity and extractedDataTemp then named it extractedData.
-7. Then labelled extractedData in step 6 above using descriptive names obtained from activity_labels.txt.
+7. Now column bind the **originalSubjectDF, originalActivityDF and extractedDataTempDF then named it extractedDataset.**
+8. Then labelled **extractedDataset** in step 7 above using descriptive names obtained from **activityLabelsDf**.
 	- 1- WALKING
 	- 2- WALKING_UPSTAIRS
 	- 3- WALKING_DOWNSTAIRS
 	- 4- SITTING
 	- 5- STANDING
 	- 6- LAYING 
-8. Replace abreviations from features names using gsub.
+	- Uses descriptive activity names to name the activities in the dataset extractedDatasetDF$Activity <- 
+	factor(extractedDatasetDF$Activity, 
+           levels = c(1,2,3,4,5,6),labels = activityLabelsDF[,2])
+9. Replace abreviations from features names using gsub.
 	-  Replace **Acc** with **Accelerometer**     
 	-  Replace **Gyro** with **Gyroscope**      
 	-  Replace **Mag** with **Magnitude**      
@@ -164,7 +177,7 @@ The experiments have been carried out with a group of 30 volunteers within an ag
 	-  Replace **-** with **_**
 	-  Replace **t** with **Time**
 	-  Replace **f** with **Frequency**
-9. The transformed features from step 8:
+10. The transformed features from step 9:
 	- 1 TimeBodyAccelerometer-mean()-X
 	- 2 TimeBodyAccelerometer-mean()-Y
 	- 3 TimeBodyAccelerometer-mean()-Z
@@ -231,6 +244,6 @@ The experiments have been carried out with a group of 30 volunteers within an ag
 	- 64 FrequencyBodyGyroscopeMagnitude-std()
 	- 65 FrequencyBodyGyroscopeJerkMagnitude-mean()
 	- 66 FrequencyBodyGyroscopeJerkMagnitude-std() 
-10. Use the melt function from reshape2 to melt the extractedData with subject and activity as **id**
-11. Then apply dcast function and compute the average of the grouped data set (extractedData)
-12. Then wrote the tidy data obtained in step 10 using write.table with option row.name = FALSE into a text file tidyDataset.txt
+11. Use the melt function from reshape2 to melt the **extractedDatasetDF** with subject and activity as **id** the assign it to **averageDatasetDF**
+12. Then apply dcast function and compute the average of the grouped data set (**averageDatasetDF**)
+13. Then wrote the tidy data set obtained in step 12 (**averageDatasetDF**) using write.table with option row.name = FALSE into a text file tidy.txt
