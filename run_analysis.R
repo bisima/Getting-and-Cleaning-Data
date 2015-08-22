@@ -11,17 +11,17 @@ library(reshape2)
 ## DF means dataframe is been used throughtout the code.
 
 ## Read all the input data before starting analysis.
-featureDF <- read.table("~/project_getdata/UCI HAR Dataset/features.txt")
-activityLabelsDF <- read.table("~/project_getdata/UCI HAR Dataset/activity_labels.txt")
+featureDF <- read.table("~/project_getdata/UCI HAR Dataset/features.txt", header = FALSE)
+activityLabelsDF <- read.table("~/project_getdata/UCI HAR Dataset/activity_labels.txt", header = FALSE)
 featureNames <- as.character(featureDF[,2])
 
-trainDatasetDF <- read.table("~/project_getdata/UCI HAR Dataset/train/X_train.txt")
-trainActivityDF <- read.table("~/project_getdata/UCI HAR Dataset/train/y_train.txt") 
-trainSubjectDF <- read.table("~/project_getdata/UCI HAR Dataset/train/subject_train.txt") 
+trainDatasetDF <- read.table("~/project_getdata/UCI HAR Dataset/train/X_train.txt", header = FALSE)
+trainActivityDF <- read.table("~/project_getdata/UCI HAR Dataset/train/y_train.txt", header = FALSE) 
+trainSubjectDF <- read.table("~/project_getdata/UCI HAR Dataset/train/subject_train.txt", header = FALSE) 
 
-testDatasetDF <- read.table("~/project_getdata/UCI HAR Dataset/test/X_test.txt")
-testActivityDF <- read.table("~/project_getdata/UCI HAR Dataset/test/y_test.txt") 
-testSubjectDF <- read.table("~/project_getdata/UCI HAR Dataset/test/subject_test.txt")
+testDatasetDF <- read.table("~/project_getdata/UCI HAR Dataset/test/X_test.txt", header = FALSE)
+testActivityDF <- read.table("~/project_getdata/UCI HAR Dataset/test/y_test.txt", header = FALSE) 
+testSubjectDF <- read.table("~/project_getdata/UCI HAR Dataset/test/subject_test.txt", header = FALSE)
 
 ## 1) Merge the training and the test datasets to create original dataset
 
@@ -73,4 +73,4 @@ averageDatabsetDF <- dcast(averageDatabsetDF, ... ~ variable,mean)
 ## averageDatabsetDF <- dcast(averageDatabsetDF,Subject + Activity ~ variable,mean)
 
 ## Write the Average Databaset as a txt file
-write.table(averageDatabsetDF,file ="tidyDataset.txt",row.names = FALSE)
+write.table(averageDatabsetDF,file ="tidy.txt",row.names = FALSE)
